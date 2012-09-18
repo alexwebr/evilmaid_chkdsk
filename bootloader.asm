@@ -1,6 +1,7 @@
 [BITS 16]
 [ORG 0x7C00]
 jmp start
+db 0x99 ; now the first four bytes are E9 81 01 99 so we can find the disk later
 
 %macro biosprint 1 ; This macro lets us print a message without manually loading
 mov si, %1
