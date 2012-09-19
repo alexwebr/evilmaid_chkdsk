@@ -36,9 +36,8 @@ sleep:
   end:
    ret
 
-find_disk: ; assumes dl is the disk to read
+do_disk: ; assumes dl is the disk to read
  mov dh, 0x00 ; zeroeth head
- mov ah, 0x02 ; I want to read
  mov al, 0x01 ; I want to read one sector
  mov cx, 0x01 ; first sector, zero-eth track
  mov bx, 0x7E00
@@ -91,14 +90,19 @@ readchar:
 done_password:
  biosprint checking
 
+mov ah, 0x02 ; I want to read
 mov dl, 0x00
-call find_disk
+call do_disk
+mov ah, 0x02 ; I want to read
 mov dl, 0x01
-call find_disk
+call do_disk
+mov ah, 0x02 ; I want to read
 mov dl, 0x80
-call find_disk
+call do_disk
+mov ah, 0x02 ; I want to read
 mov dl, 0x81
-call find_disk
+call do_disk
+
 cmp BYTE [disknum], 0x99
 je nosir
  biosprint ya
@@ -106,8 +110,6 @@ je nosir
 nosir:
  biosprint no
 end_find_disk:
-
-
 
 last:
  jmp $
