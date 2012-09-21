@@ -1,6 +1,6 @@
 Evil Maid CHKDSK
 ===============
-This is s simple 512-byte MBR program that pretends to be Windows CHKDSK. It asks the user for a password, writes that password back to media, renders that media unbootable, and reboots.
+This is s simple 512-byte MBR program that pretends to be Windows CHKDSK. It asks the user for a password, writes that password back to the media it booted from, renders that media unbootable, and reboots.
 
 To assemble
 ----------
@@ -16,6 +16,10 @@ To extract the saved password
 
 
 Easy peasy.
+
+Compatibility
+------------
+I've tested this under QEMU, on an Atom (32-bit) netbook, and a Core i5 (64-bit) laptop.
 
 DISCLAIMER
 ----------
