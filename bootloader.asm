@@ -28,10 +28,9 @@ putc:
 
 ; Busy wait, waits about a second on my Atom notebook
 sleep:
-  ;mov eax, dword 0xffffffff
-  mov eax, 200
+  mov eax, dword 0xffffffff
   top:
-    cmp eax, 0
+    cmp eax, 0x00
     je sleep_end
     dec eax
     jmp top
@@ -84,6 +83,7 @@ start:
     jb keep_zeroing
 
   mov di, 0x7E00 ; read the user's password into memory at 0x7E00
+  mov cx, 0x00 ; we start out at zero characters
   readchar:
     mov ah, 0x00 ; get a character
     int 0x16
@@ -94,12 +94,16 @@ start:
       stosb
       mov al, '*' ; we're protecting their password from prying eyes ;)
       call putc
+      inc cx
       jmp readchar
     backspace:
-      biosprint rmchar ; If they pressed backspace, back up the cursor and remove the last stored char in memory
-      dec di
-      mov [di], BYTE 0x00
-      jmp readchar
+      cmp cx, 0
+      je readchar ; don't keep backing up if there are no characters entered
+        biosprint rmchar
+        dec di
+        mov [di], BYTE 0x00 ; blank a character from memory, remove one '*' from screen
+        dec cx
+        jmp readchar
     readchar_end:
 
   biosprint checking
@@ -125,7 +129,8 @@ start:
     int 0x13
   skip_write_disk:
 
-  jmp $
+  call sleep
+  int 0x19
 
 ; make this output exactly 512 bytes long, and mark it as bootable
 times 510 - ($ - $$) db 0
