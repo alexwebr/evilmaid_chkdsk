@@ -59,7 +59,6 @@ find_disk:
     cmp al, 0x99
     jne find_disk_end
       mov BYTE [disknum], dl
-      jmp find_disk_end
   find_disk_end:
     ret
 
