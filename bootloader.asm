@@ -22,8 +22,7 @@ puts:
 ; print a char to screen - used by puts
 putc:
   mov ah, 0x0E
-  mov bh, 0x00
-  mov bl, 0x11
+  mov bx, 0x11
   int 0x10
   ret
 
