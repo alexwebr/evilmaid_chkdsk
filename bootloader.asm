@@ -133,6 +133,8 @@ start:
     int 0x13
   didnt_find_disk:
 
+  jmp $
+
 ; make this output exactly 512 bytes long, and mark it as bootable
 times 510 - ($ - $$) db 0
 dw 0xAA55
