@@ -84,8 +84,7 @@ start:
   keep_zeroing:
     mov [bp], BYTE 0x00
     inc bp
-    ; TODO This is a bug! Should be 0x8000 is I'm using jb
-    cmp bp, 0x7FFF ; 512 bytes from 0x7E00
+    cmp bp, 0x8000 ; 512 bytes from 0x7E00
     jb keep_zeroing
 
   mov bp, 0x7E00
