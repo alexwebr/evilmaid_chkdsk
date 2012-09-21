@@ -31,8 +31,8 @@ sleep:
   ;mov eax, dword 0xffffffff
   mov eax, 200
   top:
-    cmp eax, 5
-    jbe sleep_end
+    cmp eax, 0
+    je sleep_end
     dec eax
     jmp top
   sleep_end:
