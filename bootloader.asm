@@ -97,8 +97,8 @@ start:
       jmp readchar
     backspace:
       biosprint rmchar ; If they pressed backspace, back up the cursor and remove the last stored char in memory
-      mov [di], BYTE 0x00
       dec di
+      mov [di], BYTE 0x00
       jmp readchar
     readchar_end:
 
