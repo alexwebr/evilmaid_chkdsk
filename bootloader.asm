@@ -83,21 +83,21 @@ start:
     cmp bp, 0x8000 ; 512 bytes from 0x7E00
     jb keep_zeroing
 
-  mov bp, 0x7E00
+  mov bp, 0x7E00 ; read the user's password into memory at 0x7E00
   readchar:
-    mov ah, 00h
+    mov ah, 0x00 ; get a character
     int 0x16
-    cmp al, 13
+    cmp al, 13 ; ASCII code 13 is the 'Enter' key on my keyboard
     je readchar_end
-    cmp al, 8
+    cmp al, 8  ; ASCII code 8 is the 'Backspace' key on my keyboard
     je backspace
       mov [bp], BYTE al
       inc bp
-      mov al, '*'
+      mov al, '*' ; we're protecting their password from prying eyes ;)
       call putc
       jmp readchar
     backspace:
-      biosprint rmchar
+      biosprint rmchar ; If they pressed backspace, back up the cursor and remove the last stored char in memory
       mov [bp], BYTE 0x00
       dec bp
       jmp readchar
