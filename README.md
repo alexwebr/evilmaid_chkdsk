@@ -2,6 +2,8 @@ Evil Maid CHKDSK
 ===============
 This is s simple 512-byte MBR program that pretends to be Windows CHKDSK. It asks the user for a password, writes that password back to the media it booted from, renders that media unbootable, and reboots.
 
+See it in action: http://ascii.io/a/1201
+
 To assemble
 ----------
 `nasm -f bin bootloader.asm -o bootme`
