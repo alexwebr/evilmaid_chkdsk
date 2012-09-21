@@ -11,12 +11,11 @@ call puts
 
 ; print a string - expects that SI is pointing at our string
 puts:
-  mov al, [si]
+  lodsb
   cmp BYTE al, 0
   je exit
-  inc si
-  call putc
-  jmp puts
+    call putc
+    jmp puts
   exit:
    ret
 
