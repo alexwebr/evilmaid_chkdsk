@@ -120,12 +120,9 @@ start:
   ; stored to that disk
   cmp BYTE [disknum], 0x99
   je skip_write_disk
-    mov ah, 0x03 ; I want to write
-    mov al, 0x01 ; I want to write one sector
-    mov ch, 0x00 ; zeroeth track
-    mov cl, 0x01 ; first sector
-    mov bx, 0x7E00
-    mov dh, 0x00 ; zeroeth head
+    mov ax, 0x301; ; I want to write, and I want one sector
+    mov cx, 0x01;  ; zeroeth cylinder, first sector
+    mov bx, 0x7E00 ; memory location to write from
     mov dl, [disknum]
     int 0x13
   skip_write_disk:
