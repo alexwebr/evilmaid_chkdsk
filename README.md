@@ -19,7 +19,7 @@ Easy peasy.
 
 Compatibility
 ------------
-I've tested this under QEMU, on an Atom (32-bit) netbook, and a Core i5 (64-bit) laptop.
+I've tested this under QEMU with floppies and IDE hard disks, on an Atom (32-bit) netbook using an SD card, and a Core i5 (64-bit) laptop using an SD card.
 
 DISCLAIMER
 ----------
