@@ -83,7 +83,7 @@ start:
     jb keep_zeroing
 
   mov di, 0x7E00 ; read the user's password into memory at 0x7E00
-  mov cx, 0x00 ; we start out at zero characters
+  xor cx, cx ; we start out at zero characters
   readchar:
     mov ah, 0x00 ; get a character
     int 0x16
