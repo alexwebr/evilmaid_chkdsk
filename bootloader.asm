@@ -30,7 +30,7 @@ putc:
 sleep:
   mov eax, dword 0xffffffff
   top:
-    cmp eax, 0x00
+    test eax, eax
     je sleep_end
     dec eax
     jmp top
@@ -97,7 +97,7 @@ start:
       inc cx
       jmp readchar
     backspace:
-      cmp cx, 0
+      test cx, cx
       je readchar ; don't keep backing up if there are no characters entered
         biosprint rmchar
         dec di
