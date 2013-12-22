@@ -29,4 +29,4 @@ I've tested this under QEMU with floppies and IDE hard disks, on an Atom (32-bit
 
 DISCLAIMER
 ----------
-I haven't tested this in a large number of devices. If the fourth byte of the MBR of another disk in your system is 0x99, you're going to have a bad time (bricked bootloader). This value is arbitrary and might be changed if I find a better one.
+I haven't tested this in a large number of devices. If the fourth byte of the MBR of another disk in your system is 0x99, you're going to have a bad time (overwritten partition table and/or bootloader). This value is arbitrary and might be changed if I find a better one.
