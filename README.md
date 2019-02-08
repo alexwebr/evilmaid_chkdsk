@@ -4,7 +4,7 @@ This is a simple 512-byte MBR program that pretends to be Windows CHKDSK. It ask
 
 **NOTE**: Windows helpfully prompts the user to format the drive when it's inserted, or when they first log in after the password has been captured. I don't think this can be considered a serious tool until that's fixed, but I've used literally every byte of the MBR - the next stable version probably won't be 512 bytes :)
 
-Terminal capture of using it with QEMU: http://ascii.io/a/1201
+Terminal capture of using it with QEMU: https://asciinema.org/a/1201
 
 Video demonstration on a Windows laptop: https://www.youtube.com/watch?v=tull5_Ctz8M
 
